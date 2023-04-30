@@ -49,6 +49,11 @@ public class MoveWithVelocity : MonoBehaviour
         inputVelocity.y = value;
     }
 
+    public void SetSpeed(float s)
+    {
+        speed = s * 10;
+    }
+
     private void OnValidate()
     {
         if (!origin)
