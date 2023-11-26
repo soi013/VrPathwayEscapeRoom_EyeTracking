@@ -1,10 +1,10 @@
-using System.Linq;
 using Unity.XR.PXR;
 using UnityEngine;
 
 public class MyEyeTracking : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private float timeleft;
+
     void Start()
     {
         var trackingState = (TrackingStateCode)PXR_MotionTracking.WantEyeTrackingService();
@@ -20,14 +20,18 @@ public class MyEyeTracking : MonoBehaviour
         Debug.Log($"{new { trackingState }} after start eyeTracking");
     }
 
-    // Update is called once per frame
     void Update()
     {
+        timeleft -= Time.deltaTime;
+
+        if (timeleft >= 0f)
+            return;
+
+        timeleft = 1f;
 
         var state = new EyeTrackingState();
         bool isTracking = false;
         var trackingState = (TrackingStateCode)PXR_MotionTracking.GetEyeTrackingState(ref isTracking, ref state);
-        Debug.Log($"{new { trackingState }} update");
 
         var info = new EyeTrackingDataGetInfo()
         {
@@ -41,8 +45,7 @@ public class MyEyeTracking : MonoBehaviour
 
         trackingState = (TrackingStateCode)PXR_MotionTracking.GetEyeTrackingData(ref info, ref eyeData);
 
-        Debug.Log($"{new { trackingState }} after get data");
-        Debug.Log($"{new { eyeData, eyeData.eyeDatas, eyeData.eyeDatas.FirstOrDefault().openness }}");
+        Debug.Log($"{new { eyeData, eyeData.eyeDatas }}");
 
     }
 }
