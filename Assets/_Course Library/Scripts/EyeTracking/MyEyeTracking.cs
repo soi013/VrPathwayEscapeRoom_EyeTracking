@@ -8,7 +8,7 @@ public class MyEyeTracking : MonoBehaviour
     void Start()
     {
         var trackingState = (TrackingStateCode)PXR_MotionTracking.WantEyeTrackingService();
-        Debug.Log($"{new { trackingState }} before start eyeTracking");
+        Debug.Log($"MyLog {new { trackingState }} before start eyeTracking");
 
         var info = new EyeTrackingStartInfo()
         {
@@ -17,7 +17,7 @@ public class MyEyeTracking : MonoBehaviour
         };
 
         trackingState = (TrackingStateCode)PXR_MotionTracking.StartEyeTracking(ref info);
-        Debug.Log($"{new { trackingState }} after start eyeTracking");
+        Debug.Log($"MyLog {new { trackingState }} after start eyeTracking");
     }
 
     void Update()
@@ -45,7 +45,23 @@ public class MyEyeTracking : MonoBehaviour
 
         trackingState = (TrackingStateCode)PXR_MotionTracking.GetEyeTrackingData(ref info, ref eyeData);
 
-        Debug.Log($"{new { eyeData, eyeData.eyeDatas }}");
+        //Debug.Log($"MyEyeTracking {new { eyeData, eyeData.eyeDatas }}");
+        //Debug.Log($"MyEyeTracking {new { eyeData }}");
+        //Debug.Log($"MyEyeTracking {new { eyeData.eyeDatas.Length }}");
+        //Debug.Log($"MyEyeTracking");
+        //Debug.Log($"MyEyeTracking 1 {new { eyeData.eyeDatas[0].pose, eyeData.eyeDatas[0].openness, eyeData.eyeDatas.Length }}");
+        PxrVector4f eyeOri = eyeData.eyeDatas[0].pose.orientation;
+        Debug.Log($"MyLog 0 {new { eyeOri.w, eyeOri.x, eyeOri.y, eyeOri.z }}");
 
+        eyeOri = eyeData.eyeDatas[1].pose.orientation;
+        Debug.Log($"MyLog 1 {new { eyeOri.w, eyeOri.x, eyeOri.y, eyeOri.z }}");
+
+        eyeOri = eyeData.eyeDatas[2].pose.orientation;
+        Debug.Log($"MyLog 2 {new { eyeOri.w, eyeOri.x, eyeOri.y, eyeOri.z }}");
+
+        string te = ToDebugText(eyeOri);
     }
+
+    private string ToDebugText(PxrVector4f eyeOri) => $"{new { eyeOri.w, eyeOri.x, eyeOri.y, eyeOri.z }}";
+
 }
